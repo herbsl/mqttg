@@ -12,7 +12,7 @@ class RadioGPIO(RadioBase):
         self.rfm69 = RFM69.RFM69(freqBand, nodeID, networkID, isRFM69HW, intPin, rstPin)
         self.NETWORKID = networkID
         self.rfm69.setHighPower(True)
-        self.rfm69.encrypt("sampleEncryptKey")
+        self.rfm69.encrypt(encryption.key)
 
     def __del__(self):
         self.rfm69.shutdown()
