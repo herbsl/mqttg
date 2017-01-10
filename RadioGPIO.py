@@ -1,5 +1,7 @@
 from RadioBase import RadioBase
 
+import encryption
+
 import RFM69
 from RFM69registers import *
 

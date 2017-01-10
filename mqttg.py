@@ -7,8 +7,8 @@ import paho.mqtt.client as mqtt
 from RadioSerial import RadioSerial
 from RadioGPIO import RadioGPIO
 
+import encryption
 import topics
-
 
 def main():
     parser = argparse.ArgumentParser(description='A serial to mqtt gateway')
@@ -85,19 +85,15 @@ def main():
             topicDef = topics.mapping[key]
             topicName = topicDef[0]
 
-            if topicName == "xVersion":
-                data = value
+            u1 = str(length) + 'b'
+            u2 = topicDef[1]
+            p1 = u1 + 'x' * (4 - length)
 
-            else:
-                u1 = str(length) + 'b'
-                u2 = topicDef[1]
-                p1 = u1 + 'x' * (4 - length)
+            x = struct.unpack(u1, value)
+            data = struct.unpack(u2, struct.pack(p1, *x))[0]
 
-                x = struct.unpack(u1, value)
-                data = struct.unpack(u2, struct.pack(p1, *x))[0]
-
-                if len(topicDef) > 2:
-                    data = "%.2f" % (data / topicDef[2])
+            if len(topicDef) > 2:
+                data = "%.2f" % (data / topicDef[2])
 
             if args.debug:
                 print "%s: %s (%d)" % (topicName, data, length)

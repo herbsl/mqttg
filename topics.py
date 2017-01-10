@@ -1,4 +1,3 @@
-
 mapping = {
      1: [ "Version",     "<4s" ],
      2: [ "CPU-Speed",   "<I", 1. / 1000 ],
